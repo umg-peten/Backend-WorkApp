@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkApp.Helpers;
 using WorkApp.IServices;
+using WorkApp.Models;
 using WorkApp.Services;
 
 namespace WorkApp
@@ -35,6 +36,7 @@ namespace WorkApp
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IConnection, Connection>();
             services.AddSingleton<IDepartmentService, DepartmentService>();
+            services.AddSingleton<ILogsWS, LogWS>();
             services.AddScoped<ITokenHandler, Helpers.TokenHandler>();
 
             //Json Web Token implementation

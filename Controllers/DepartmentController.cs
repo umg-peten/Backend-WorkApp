@@ -14,6 +14,7 @@ namespace WorkApp.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
+        Response resp = new Response();
 
         public DepartmentController(IDepartmentService departmentService)
         {
@@ -24,7 +25,6 @@ namespace WorkApp.Controllers
         [Route("AddDepartment")]
         public IActionResult AddDepartment(Department department)
         {
-            Response resp = new Response();
            
             if (_departmentService.AddDepartment(department))
             {
@@ -39,6 +39,30 @@ namespace WorkApp.Controllers
                 resp.Message = "Ha ocurrido un error, si el problema persiste, contacta con el administrador del sistema";
                 return StatusCode(500, resp);
             }
+        }
+
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult GetAllDepartments()
+        {
+            var departments = _departmentService.GetAllDepartments();
+            resp.Status = 200;
+            resp.Message = "Ok";
+            resp.Data = departments;
+
+            return Ok(resp);
+        }
+
+        [HttpGet("{id}")]
+        
+        public IActionResult GetDepartmentById(int id)
+        {
+            var department = _departmentService.GetDepartmentById(id);
+            resp.Status = 200;
+            resp.Message = "Ok";
+            resp.Data = department;
+
+            return Ok(resp);
         }
 
     }

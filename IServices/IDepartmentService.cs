@@ -9,5 +9,7 @@ namespace WorkApp.IServices
     public interface IDepartmentService
     {
         public bool AddDepartment(Department department);
+        public List<Department> GetAllDepartments();
+        public Department GetDepartmentById(int id);
     }
 }
