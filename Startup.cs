@@ -67,6 +67,14 @@ namespace WorkApp
                         ValidAudience = jwt.Audience
                     };
                 });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "mycors", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +88,7 @@ namespace WorkApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("mycors");
 
             app.UseAuthentication();
 
