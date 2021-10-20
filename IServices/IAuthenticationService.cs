@@ -6,8 +6,8 @@ using WorkApp.Dtos;
 
 namespace WorkApp.IServices
 {
-    public interface ITokenHandler
+    public interface IAuthenticationService
     {
-        public string GenerateToken(AuthenticatedUserDto user);
+        public AuthenticatedUserDto Authentication(AuthDto auth);
     }
 }
