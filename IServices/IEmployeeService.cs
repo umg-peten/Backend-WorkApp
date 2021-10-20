@@ -10,5 +10,6 @@ namespace WorkApp.IServices
     {
         public int AddEmployee(AddEmployeeDto employee);
         public EmployeeDto GetEmployeeById(int id);
+        public List<EmployeeDto> GetAllEmployees();
     }
 }

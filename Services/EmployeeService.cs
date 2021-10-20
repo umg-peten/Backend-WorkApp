@@ -120,5 +120,69 @@ namespace WorkApp.IServices
                 return null;   
             }
         }
+
+
+        public List<EmployeeDto> GetAllEmployees()
+        {
+            List<EmployeeDto> employees = new List<EmployeeDto>();
+            try
+            {
+                using (var connection = _connection.GetSqlConnection())
+                {
+                    SqlCommand cmd = new SqlCommand("usp_get_all_employees", connection);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Connection.Open();
+
+                    var rdr = cmd.ExecuteReader();
+
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            EmployeeDto employee = new EmployeeDto();
+                            employee.Id = rdr.GetInt32(0);
+                            employee.Name = rdr.GetString(1);
+                            employee.LastName = rdr.GetString(2);
+                            employee.Birthdate = rdr.GetDateTime(3).ToString();
+                            employee.PhoneNumber = rdr.GetString(4);
+                            employee.Sex = rdr.GetString(5);
+                            employee.Salary = new SalaryModel
+                            {
+                                IdEmployee = rdr.GetInt32(0),
+                                Id = rdr.GetInt32(6),
+                                Salary = Double.Parse(rdr.GetSqlMoney(7).ToString()),
+                                SalaryDate = rdr.GetDateTime(8).ToString()
+                            };
+                            employee.Position = new Position
+                            {
+                                id = rdr.GetInt32(9),
+                                name = rdr.GetString(10),
+                                description = rdr.GetString(11),
+                                Department = new Department
+                                {
+                                    id = rdr.GetInt32(12),
+                                    name = rdr.GetString(13),
+                                    description = rdr.GetString(14)
+                                }
+                            };
+                            employees.Add(employee);
+                        }
+                    }
+                    logModel.Message = "Ok";
+                    logModel.Section = "Services/EmployeeService/AddService";
+                    logModel.Success = true;
+                    _logsWS.InsertLog(logModel);
+                    return employees;
+                }
+            }
+            catch (Exception e)
+            {
+                logModel.Message = e.Message + " " + e.StackTrace;
+                logModel.Section = "Services/EmployeeService/AddService";
+                logModel.Success = false;
+                _logsWS.InsertLog(logModel);
+                return null;
+            }
+        }
     }
 }

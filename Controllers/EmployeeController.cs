@@ -27,9 +27,29 @@ namespace WorkApp.Controllers
 
         // GET: api/<EmployeeController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var employee = _employeeService.GetAllEmployees();
+            if (employee.Count > 0)
+            {
+                Response resp = new Response
+                {
+                    Status = 200,
+                    Message = "Ok",
+                    Data = employee
+                };
+                return Ok(resp);
+            }
+            else
+            {
+                Response resp = new Response
+                {
+                    Status = 404,
+                    Message = "Not Found",
+                    Data = employee
+                };
+                return NotFound();
+            }
         }
 
         // GET api/<EmployeeController>/5
