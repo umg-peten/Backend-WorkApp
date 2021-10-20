@@ -25,7 +25,6 @@ namespace WorkApp.Controllers
         }
 
 
-        // GET: api/<EmployeeController>
         [HttpGet]
         public IActionResult Get()
         {
@@ -52,7 +51,6 @@ namespace WorkApp.Controllers
             }
         }
 
-        // GET api/<EmployeeController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -81,6 +79,7 @@ namespace WorkApp.Controllers
 
         // POST api/<EmployeeController>
         [HttpPost]
+        [Route("Add")]
         public IActionResult AddEmployee(AddEmployeeDto employe)
         {
             int idEmployee = _employeeService.AddEmployee(employe);
@@ -91,16 +90,17 @@ namespace WorkApp.Controllers
 
         }
 
-        // PUT api/<EmployeeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        [Route("Update")]
+        public IActionResult UpdateEmployee(UpdateEmployeeDto employe)
         {
+            int rowsAffected = _employeeService.UpdateEmployee(employe);
+
+            if (rowsAffected > 0) return Ok(new Response { Status = 200, Message = "Usuario Actualizado exitosamente", Data = _employeeService.GetEmployeeById(employe.Id) });
+
+            return StatusCode(500, new Response { Status = 500, Message = "Ocurrió un error al Actualizar el usuario, si el problema persiste contacta al administrador del sistema" });
+
         }
 
-        // DELETE api/<EmployeeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
