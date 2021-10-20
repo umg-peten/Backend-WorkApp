@@ -66,8 +66,6 @@ namespace WorkApp
                         ValidAudience = jwt.Audience
                     };
                 });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +79,8 @@ namespace WorkApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
