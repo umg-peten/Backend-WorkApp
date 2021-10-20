@@ -9,5 +9,6 @@ namespace WorkApp.IServices
     public interface IEmployeeService
     {
         public int AddEmployee(AddEmployeeDto employee);
+        public EmployeeDto GetEmployeeById(int id);
     }
 }
