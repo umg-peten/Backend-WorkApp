@@ -12,7 +12,8 @@ namespace WorkApp.IServices
         public EmployeeDto GetEmployeeById(int id);
         public List<EmployeeDto> GetAllEmployees();
         public int UpdateEmployee(UpdateEmployeeDto employee);
-        public bool ExistsEmployeeById(int id);
+        public bool ExistEmployeeById(int id);
+        public bool ExistDpi(string dpi);
 
     }
 }

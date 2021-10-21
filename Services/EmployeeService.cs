@@ -226,5 +226,45 @@ namespace WorkApp.IServices
             return idEmployee;
 
         }
+
+        public bool ExistEmployeeById(int id)
+        {
+            bool existEmployee = false;
+
+            using(var connection = _connection.GetSqlConnection())
+            {
+                string query = "SELECT COUNT(1) FROM Employee WHERE ID = @id";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.Connection.Open();
+
+                int rdr = Int32.Parse(cmd.ExecuteScalar().ToString());
+
+                if (rdr > 0) existEmployee = true;
+            }
+
+            return existEmployee;
+        }
+
+        public bool ExistDpi(string dpi)
+        {
+            bool existEmployee = false;
+
+            using (var connection = _connection.GetSqlConnection())
+            {
+                string query = "SELECT COUNT(1) FROM Employee WHERE dpi = @dpi";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@dpi", dpi);
+
+                cmd.Connection.Open();
+
+                int rdr = Int32.Parse(cmd.ExecuteScalar().ToString());
+
+                if (rdr > 0) existEmployee = true;
+            }
+
+            return existEmployee;
+        }
     }
 }

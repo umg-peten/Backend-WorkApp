@@ -18,13 +18,13 @@ namespace WorkApp.Dtos
         [DataType(DataType.Date)]
         public string Birthdate { get; set; }
         [Required]
-        [RegularExpression(@"^([0-9]{8})", ErrorMessage = "Solo admiten 8 valores númericos")]
+        [RegularExpression(@"^([0-9]{8})$", ErrorMessage = "Solo admiten 8 valores númericos")]
         public string PhoneNumber { get; set; }
         [Required]
-        [RegularExpression(@"^([0-9]{13})", ErrorMessage = "Ingrese un numero de dpi valido")]
+        [RegularExpression(@"^([0-9]{13})$", ErrorMessage = "Ingrese un numero de dpi valido")]
         public string Dpi { get; set; }
         [Required]
-        [RegularExpression(@"^([0-1]{1})", ErrorMessage = "Ingrese un Id Valido: (0-Femenino),(1-Masculino)")]
+        [RegularExpression(@"^([0-1]{1})$", ErrorMessage = "Ingrese un Id Valido: (0-Femenino),(1-Masculino)")]
         public int Sex { get; set; }
         [Required]
         public int IdPosition { get; set; }

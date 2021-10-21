@@ -82,6 +82,15 @@ namespace WorkApp.Controllers
         [Route("Add")]
         public IActionResult AddEmployee(AddEmployeeDto employe)
         {
+            Response resp = new Response();
+            if (_employeeService.ExistDpi(employe.Dpi))
+            {
+                resp.Status = 400;
+                resp.Message = "El dpi ya existe en la base de datos";
+                return BadRequest(resp);
+            }
+
+
             int idEmployee = _employeeService.AddEmployee(employe);
 
             if (idEmployee > 0) return Ok(new Response { Status = 200, Message = "Usuario creado exitosamente", Data = _employeeService.GetEmployeeById(idEmployee) });
@@ -94,9 +103,23 @@ namespace WorkApp.Controllers
         [Route("Update")]
         public IActionResult UpdateEmployee(UpdateEmployeeDto employe)
         {
+            Response resp = new Response();
+            if (!_employeeService.ExistEmployeeById(employe.Id))
+            {
+                resp.Status = 404;
+                resp.Message = "Usuario no encontrado";
+                return NotFound(resp);
+            }
+
             int rowsAffected = _employeeService.UpdateEmployee(employe);
 
-            if (rowsAffected > 0) return Ok(new Response { Status = 200, Message = "Usuario Actualizado exitosamente", Data = _employeeService.GetEmployeeById(employe.Id) });
+            if (rowsAffected > 0)
+            {
+                resp.Status = 200;
+                resp.Message = "Usuario Actualizado satisfactoriamente";
+                resp.Data = _employeeService.GetEmployeeById(employe.Id);
+                return Ok(resp);
+            }
 
             return StatusCode(500, new Response { Status = 500, Message = "Ocurrió un error al Actualizar el usuario, si el problema persiste contacta al administrador del sistema" });
 

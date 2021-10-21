@@ -40,6 +40,7 @@ namespace WorkApp
             services.AddSingleton<ILogsWS, LogWS>();
             services.AddSingleton<ITokenHandler, Helpers.TokenHandler>();
             services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddSingleton<IPositionService, PositionService>();
 
             //Json Web Token implementation
             var JWTSection = Configuration.GetSection("JWT");
