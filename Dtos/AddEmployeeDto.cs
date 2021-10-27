@@ -30,5 +30,8 @@ namespace WorkApp.Dtos
         public int IdPosition { get; set; }
         [Required]
         public double Salary { get; set; }
+        public double Bonification { get; set; }
+        public double PersonalExpenses { get; set; }
+
     }
 }

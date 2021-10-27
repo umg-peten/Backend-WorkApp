@@ -11,5 +11,7 @@ namespace WorkApp.Models
         public int IdEmployee { get; set; }
         public double Salary { get; set; }
         public string SalaryDate { get; set; }
+        public double Bonification { get; set; }
+        public double PersonalExpenses { get; set; }
     }
 }

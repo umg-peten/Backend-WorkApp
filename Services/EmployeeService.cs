@@ -35,6 +35,8 @@ namespace WorkApp.IServices
                     cmd.Parameters.AddWithValue("@sex", employee.Sex);
                     cmd.Parameters.AddWithValue("@idPosition", employee.IdPosition);
                     cmd.Parameters.AddWithValue("@salary", employee.Salary);
+                    cmd.Parameters.AddWithValue("@bonification", employee.Bonification);
+                    cmd.Parameters.AddWithValue("@personalExpenses", employee.PersonalExpenses);
                     cmd.Connection.Open();
 
                     var rs = int.Parse(cmd.ExecuteScalar().ToString()); //Execute Scalar devuelve la primera fila y columna del SP
@@ -88,7 +90,9 @@ namespace WorkApp.IServices
                                 IdEmployee = id,
                                 Id = rdr.GetInt32(6),
                                 Salary = Double.Parse(rdr.GetSqlMoney(7).ToString()),
-                                SalaryDate = rdr.GetDateTime(8).ToString()
+                                SalaryDate = rdr.GetDateTime(8).ToString(),
+                                Bonification = Double.Parse(rdr.GetSqlMoney(15).ToString()),
+                                PersonalExpenses = Double.Parse(rdr.GetSqlMoney(16).ToString()),
                             };
                             employee.Position = new Position
                             {
@@ -151,7 +155,9 @@ namespace WorkApp.IServices
                                 IdEmployee = rdr.GetInt32(0),
                                 Id = rdr.GetInt32(6),
                                 Salary = Double.Parse(rdr.GetSqlMoney(7).ToString()),
-                                SalaryDate = rdr.GetDateTime(8).ToString()
+                                SalaryDate = rdr.GetDateTime(8).ToString(),
+                                Bonification = Double.Parse(rdr.GetSqlMoney(15).ToString()),
+                                PersonalExpenses = Double.Parse(rdr.GetSqlMoney(16).ToString())
                             };
                             employee.Position = new Position
                             {
@@ -203,6 +209,8 @@ namespace WorkApp.IServices
                     cmd.Parameters.AddWithValue("@sex", employee.Sex);
                     cmd.Parameters.AddWithValue("@idPosition", employee.IdPosition);
                     cmd.Parameters.AddWithValue("@salaryIn", employee.Salary);
+                    cmd.Parameters.AddWithValue("@bonification", employee.Bonification);
+                    cmd.Parameters.AddWithValue("@personalExpenses", employee.PersonalExpenses);
                     cmd.Connection.Open();
 
                     var rs = int.Parse(cmd.ExecuteScalar().ToString()); //Execute Scalar devuelve la primera fila y columna del SP

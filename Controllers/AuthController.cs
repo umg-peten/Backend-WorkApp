@@ -35,7 +35,10 @@ namespace WorkApp.Controllers
                 return Ok(resp);
 
             }
-            return Unauthorized();
+
+            resp.Status = 400;
+            resp.Message = "Usuario o contraseña incorrecta";
+            return Unauthorized(resp);
         }
 
     }
