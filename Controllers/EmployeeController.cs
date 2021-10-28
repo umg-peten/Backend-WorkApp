@@ -125,5 +125,35 @@ namespace WorkApp.Controllers
 
         }
 
+        [HttpDelete("{id:int}", Name = "Delete")]
+        [Route("Delete")]
+        public IActionResult Delete(int id)
+        {
+            Response resp = new Response();
+            if (_employeeService.ExistEmployeeById(id))
+            {
+                bool sucess = _employeeService.DeleteEmployee(id);
+                if (sucess)
+                {
+                    resp.Status = 200;
+                    resp.Message = "Empleado eliminado exitosamente";
+                    return Ok(resp);
+                }
+                else
+                {
+                    resp.Status = 500;
+                    resp.Message = "Ocurrio un error al eliminar";
+                    return Ok(resp);
+                }
+            }
+            else
+            {
+                resp.Status = -1;
+                resp.Message = "No existe algun empleado con el id {"+id+"}";
+                return NotFound(resp);
+            }
+
+        }
+
     }
 }

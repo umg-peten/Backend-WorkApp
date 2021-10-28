@@ -14,6 +14,8 @@ namespace WorkApp.IServices
         public int UpdateEmployee(UpdateEmployeeDto employee);
         public bool ExistEmployeeById(int id);
         public bool ExistDpi(string dpi);
+        public bool DeleteEmployee(int id);
+
 
     }
 }

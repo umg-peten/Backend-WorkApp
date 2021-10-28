@@ -274,5 +274,28 @@ namespace WorkApp.IServices
 
             return existEmployee;
         }
+
+        public bool DeleteEmployee(int id)
+        {
+            using (var connection = _connection.GetSqlConnection())
+            {
+                string query = "UPDATE Employee SET [status] = 0 where id=@id";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.Connection.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                if(rows > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
     }
 }
