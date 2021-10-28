@@ -9,6 +9,6 @@ namespace WorkApp.IServices
     public interface  IOvertimeService
     {
         public Overtime GetOvertimeByIdEmployee(int id);
-        public bool AddOvertime(Overtime overtime);
+        public int AddOvertime(Overtime overtime);
     }
 }
