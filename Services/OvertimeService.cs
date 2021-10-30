@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkApp.Dtos;
 using WorkApp.IServices;
 using WorkApp.Models;
 
@@ -56,9 +57,41 @@ namespace WorkApp.Services
             return rows;
         }
 
-        public Overtime GetOvertimeByIdEmployee(int id)
+        public List<OvertimeDto> GetOvertime(int type, int? user, string datebegin, string dateend)
         {
-            throw new NotImplementedException();
+            List<OvertimeDto> overtimes = new List<OvertimeDto>();
+            using(var connection = _connection.GetSqlConnection())
+            {
+                SqlCommand cmd = new SqlCommand("usp_get_overtime", connection);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@typeId", type);
+                cmd.Parameters.AddWithValue("@idEmployee", user);
+                cmd.Parameters.AddWithValue("@dateBeginIN", datebegin);
+                cmd.Parameters.AddWithValue("@dateEndIN", dateend);
+                cmd.Connection.Open();
+
+                var rdr = cmd.ExecuteReader();
+
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        OvertimeDto overtime = new OvertimeDto();
+                        overtime.Id = rdr.GetInt32(0);
+                        overtime.Name = rdr.GetString(1);
+                        overtime.Lastname = rdr.GetString(2);
+                        overtime.Overtime = rdr.GetInt32(3);
+                        overtime.AmountOfOvertime = rdr.GetString(4);
+                        overtime.Description = rdr.GetString(5);
+                        overtime.Date = rdr.GetString(6);
+
+                        overtimes.Add(overtime);
+                    }
+                }
+
+            }
+
+            return overtimes;
         }
     }
 }

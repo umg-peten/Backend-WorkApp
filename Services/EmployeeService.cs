@@ -85,6 +85,7 @@ namespace WorkApp.IServices
                             employee.Birthdate = rdr.GetDateTime(3).ToString();
                             employee.PhoneNumber = rdr.GetString(4);
                             employee.Sex = rdr.GetString(5);
+                            employee.Dpi = rdr.GetString(17);
                             employee.Salary = new SalaryModel
                             {
                                 IdEmployee = id,
@@ -150,6 +151,7 @@ namespace WorkApp.IServices
                             employee.Birthdate = rdr.GetDateTime(3).ToString();
                             employee.PhoneNumber = rdr.GetString(4);
                             employee.Sex = rdr.GetString(5);
+                            employee.Dpi = rdr.GetString(17);
                             employee.Salary = new SalaryModel
                             {
                                 IdEmployee = rdr.GetInt32(0),

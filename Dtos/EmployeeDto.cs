@@ -15,6 +15,7 @@ namespace WorkApp.Dtos
         public string Birthdate { get; set; }
         public string PhoneNumber { get; set; }
         public string Sex { get; set; }
+        public string Dpi { get; set; }
         public SalaryModel Salary  { get; set; }
         public Position Position { get; set; }
 

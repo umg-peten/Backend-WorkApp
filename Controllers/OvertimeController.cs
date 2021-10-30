@@ -43,5 +43,13 @@ namespace WorkApp.Controllers
 
             
         }
+        [HttpGet]
+        [Route("get")]
+        public IActionResult GetOvertime([FromQuery] int type, int? user, string? datebegin, string? dateend)
+        {
+           var lista =  _overtime.GetOvertime(type, user, datebegin, dateend);
+           
+            return Ok(lista);
+        }
     }
 }
