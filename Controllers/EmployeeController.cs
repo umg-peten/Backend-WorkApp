@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WorkApp.Dtos;
@@ -18,10 +23,14 @@ namespace WorkApp.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IWebHostEnvironment _hostEnviroment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EmployeeController(IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
+            this._hostEnviroment = hostEnvironment;
             this._employeeService = employeeService;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -124,6 +133,81 @@ namespace WorkApp.Controllers
             return StatusCode(500, new Response { Status = 500, Message = "Ocurrió un error al Actualizar el usuario, si el problema persiste contacta al administrador del sistema" });
 
         }
+
+        [HttpGet]
+        [Route("GetPDF")]
+        public IActionResult GetPdf()
+        {
+            var rutaPrincipal = _hostEnviroment.WebRootPath;
+            string rutaImage = Path.Combine(rutaPrincipal, "image-profile", "profile.jpg");
+            EmployeeDto employee = new EmployeeDto
+            {
+                Name = "Axel",
+                LastName = "Aguilar",
+                Dpi = "324486121801",
+                Position = new Position
+                {
+                    name = "Analista Programador",
+                    Department = new Department
+                    {
+                        name = "Gerencia de Sistemas"
+                    }
+                }
+            };
+
+            string fileName = Guid.NewGuid().ToString() + ".pdf";
+
+            iTextSharp.text.Rectangle rectangle = new iTextSharp.text.Rectangle(130,206);
+            Document doc = new Document(rectangle, 0, 0,0,0);
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(Path.Combine(rutaPrincipal, "public", fileName), FileMode.Create));
+            doc.AddTitle("Primer PDF");
+            doc.Open();
+            Image img = Image.GetInstance(rutaImage);
+            img.Border = 40;
+            img.BorderWidth = 0;
+            img.BorderWidthTop = 1;
+            img.Alignment = Element.ALIGN_CENTER;
+            img.ScalePercent(0.1f * 100);
+            doc.Add(img);
+            
+
+
+
+            BarcodeQRCode barcode = new BarcodeQRCode(employee.Dpi, 65,65,null);
+            Image codeQrImage = barcode.GetImage();
+            //doc.Add(codeQrImage);
+            iTextSharp.text.Font _standardFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+            // Escribimos el encabezamiento en el documento
+            Paragraph frase = new Paragraph();
+            frase.SpacingAfter = 0;
+            frase.Alignment = Element.ALIGN_CENTER;
+            frase.Add(employee.Name + " " + employee.LastName);
+            frase.Font = new Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLUE);
+
+            doc.Add(frase);
+            doc.Add(Chunk.NEWLINE);
+            frase.Clear();
+            frase.Add(employee.Position.name);
+            doc.Add(frase);
+
+
+            codeQrImage.Alignment = Element.ALIGN_CENTER;
+            doc.Add(codeQrImage);
+            doc.Close();
+            writer.Close();
+
+            //var subida = Path.Combine("image-profile", "profile.jpg");
+
+            string urlActual = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+
+            string rutaFinal = Path.Combine(urlActual, "public", fileName).Replace("\\", "/");
+            return Ok(rutaFinal);
+
+              
+
+        }
+
 
         [HttpDelete("{id:int}", Name = "Delete")]
         [Route("Delete")]

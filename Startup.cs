@@ -42,6 +42,8 @@ namespace WorkApp
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddSingleton<IPositionService, PositionService>();
             services.AddSingleton<IOvertimeService, OvertimeService>();
+            services.AddSingleton<IClockingService, ClockingService>();
+            services.AddHttpContextAccessor();
 
             //Json Web Token implementation
             var JWTSection = Configuration.GetSection("JWT");
@@ -93,9 +95,9 @@ namespace WorkApp
             app.UseCors("mycors");
 
             app.UseAuthentication();
-
+            app.UseStaticFiles();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
